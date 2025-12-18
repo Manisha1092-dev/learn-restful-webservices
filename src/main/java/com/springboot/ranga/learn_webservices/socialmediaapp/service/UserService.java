@@ -29,7 +29,7 @@ public class UserService {
        return users.stream().filter(user->user.getId() == id).findFirst().orElse(null);
     }
 
-    public User createUser(User user) {
+    public static User createUser(User user) {
         user.setId(++userCount);
         users.add(user);
         return user;

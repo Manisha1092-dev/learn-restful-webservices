@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.Objects;
+
 @ControllerAdvice
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
@@ -41,7 +43,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 
         ErrorDetails errorDetails = new ErrorDetails(
                 java.time.LocalDateTime.now(),
-                "Total Error : " + ex.getErrorCount() + " | ERRORS : " + ex.getFieldError().getDefaultMessage(),
+                "Total Error : " + ex.getErrorCount() + " | ERRORS : " + Objects.requireNonNull(ex.getFieldError()).getDefaultMessage(),
                 request.getDescription(false)
         );
 

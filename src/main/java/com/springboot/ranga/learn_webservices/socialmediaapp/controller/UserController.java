@@ -4,7 +4,6 @@ import com.springboot.ranga.learn_webservices.socialmediaapp.exception.UserNotFo
 import com.springboot.ranga.learn_webservices.socialmediaapp.model.User;
 import com.springboot.ranga.learn_webservices.socialmediaapp.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,29 +14,30 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    @Autowired
     UserService userService;
 
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers(){
+    public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") int id){
+    public ResponseEntity<User> getUserById(@PathVariable("id") int id) {
         User userById = userService.getUserById(id);
-        if(userById == null){
-            throw new UserNotFoundException("User with ID "+id+" not found");
-            //return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (userById == null) {
+            throw new UserNotFoundException("User with ID " + id + " not found");
         }
         return ResponseEntity.ok(userById);
     }
 
 
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user){
-        User savedUser = userService.createUser(user);
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+        User savedUser = UserService.createUser(user);
         var location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedUser.getId())
